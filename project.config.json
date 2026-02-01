@@ -1,0 +1,21 @@
+{
+  "project": {
+    "name": "[insert project slug]",
+    "slug": "[insert project slug]"
+  },
+  "google": {
+    "doc": [
+      {
+        "id": "",
+        "filepath": "src/data/copy.json"
+      }
+    ],
+    "sheet": [
+      {
+        "id": "",
+        "gid": "",
+        "filepath": ""
+      }
+    ]
+  }
+}
