@@ -264,7 +264,7 @@
   <h1 class="headline">Water system violations in the Mississippi River Basin</h1>
 
   <p class="dek">
-    This map shows compliancy data for Community Water Districts (CWS) serving fewer than 10,000 people for
+    This map shows compliancy data for Community Water Systems (CWS) serving fewer than 10,000 people for
     counties in the <span class="basin-svg-wrap"><BasinSvg width={20} fill="#B0B3B3" /></span>
     Mississippi/Atchafalaya River Basin. Since CWS boundaries don't neatly align with counties, a system is
     included if 30% or more of its area falls within county limits. Data is for FY 2025.
