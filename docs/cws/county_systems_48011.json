@@ -1,0 +1,1 @@
+{"type":"Topology","arcs":[[[1174,116],[65,9],[26,-125],[-125,13],[34,103]]],"transform":{"scale":[0.00017756743083003295,0.00014821957773513184],"translate":[-101.5746736,35.0975099]},"objects":{"temp_48011":{"type":"GeometryCollection","geometries":[{"arcs":[[0]],"type":"Polygon","properties":{"pws_id":"TX0060001"}},{"type":null,"properties":{"pws_id":"TX0060002"}}]}}}
