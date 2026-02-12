@@ -294,11 +294,22 @@
                             data: riverGeo,
                         });
                         map.addLayer({
+                            id: "mississippi-river-line-bg",
+                            type: "line",
+                            source: "mississippi-river",
+                            paint: {
+                                "line-color": "#fff",
+                                "line-width": 4,
+                                "line-opacity": 1,
+                            },
+                        });
+
+                        map.addLayer({
                             id: "mississippi-river-line",
                             type: "line",
                             source: "mississippi-river",
                             paint: {
-                                "line-color": "#3b82f6",
+                                "line-color": "#548687",
                                 "line-width": 2,
                                 "line-opacity": 1,
                             },
