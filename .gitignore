@@ -1,5 +1,6 @@
 /node_modules/
 /public/build/
+/public/cws/
 /dist/
 
 .DS_Store
