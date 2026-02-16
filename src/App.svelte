@@ -25,34 +25,40 @@
 
   const VIEW_OPTIONS = [
     {
-      value: "percent_compliant",
-      label: "Percent compliant",
-      color: "#27ae60",
+      value: "pct_out_of_compliance",
+      label: "Percent out of compliance",
+      color: "#dd1c77",
+      percentile: 100,
     },
     {
       value: "priority_system_count",
       label: "Enforcement priority systems",
       color: "#d97706",
+      percentile: 90,
     },
     {
       value: "sum_health_viols",
       label: "Health-based violations",
       color: "#e74c3c",
+      percentile: 90,
     },
     {
       value: "sum_acute_viols",
       label: "Acute health-based violations",
       color: "#922b21",
+      percentile: 99,
     },
     {
       value: "sum_monitor_viols",
       label: "Monitoring & reporting violations",
       color: "#3b82f6",
+      percentile: 90,
     },
     {
       value: "sum_public_notice",
       label: "Public notification & other violations",
       color: "#9b59b6",
+      percentile: 90,
     },
   ];
 
@@ -60,81 +66,98 @@
     VIEW_OPTIONS.map((o) => [o.value, o.color]),
   );
 
-  /** Violation category colors (shared by map and modal). */
+  /** Violation category colors (shared by map and modal). Keys match system_lookup violations. */
   const VIOLATION_COLORS = {
-    health_based: "#e74c3c",
-    acute_health_based: "#922b21",
-    monitoring_reporting: "#3b82f6",
-    public_notification_and_other: "#9b59b6",
+    health: "#e74c3c",
+    acute: "#922b21",
+    monitor: "#3b82f6",
+    public: "#9b59b6",
   };
 
   /** Badge-style pill colors (light bg, dark text) for modals. */
   const PILL_BADGE_STYLES = {
-    percent_compliant: { bg: "#d1fae5", text: "#065f46" },
+    pct_out_of_compliance: { bg: "#fee2e2", text: "#991b1b" },
     priority_system_count: { bg: "#fef3c7", text: "#92400e" },
     sum_health_viols: { bg: "#fee2e2", text: "#991b1b" },
     sum_acute_viols: { bg: "#fecaca", text: "#7f1d1d" },
     sum_monitor_viols: { bg: "#dbeafe", text: "#1e40af" },
     sum_public_notice: { bg: "#f3e8ff", text: "#6b21a8" },
-    health_based: { bg: "#fee2e2", text: "#991b1b" },
-    acute_health_based: { bg: "#fecaca", text: "#7f1d1d" },
-    monitoring_reporting: { bg: "#dbeafe", text: "#1e40af" },
-    public_notification_and_other: { bg: "#f3e8ff", text: "#6b21a8" },
+    health: { bg: "#fee2e2", text: "#991b1b" },
+    acute: { bg: "#fecaca", text: "#7f1d1d" },
+    monitor: { bg: "#dbeafe", text: "#1e40af" },
+    public: { bg: "#f3e8ff", text: "#6b21a8" },
     _fallback: { bg: "#f3f4f6", text: "#374151" },
   };
 
-  /** Descriptions for each view*/
+  /** Descriptions for each view. Keys match system_lookup violations. */
   const VIOLATION_DESCRIPTIONS = {
-    percent_compliant:
-      "Share of Community Water Systems in the county serving fewer than 10k people with no active violations.",
+    pct_out_of_compliance:
+      "Share of Community Water Systems in the county with at least one active violation.",
     priority_system_count:
       "Water systems that have serious, unresolved, or repeated violations.",
-    health_based:
+    health:
       "Indicates that water samples have exceeded the legal limit for a specific contaminant or failed a mandatory treatment technique.",
-    acute_health_based:
+    acute:
       "Health-based violations with the potential to produce immediate illness.",
-    monitoring_reporting:
+    monitor:
       "Failure to conduct regular water quality monitoring or timely submit results to environmental agencies.",
-    public_notification_and_other:
+    public:
       "Failure to alert consumers about serious drinking water problems that may pose a public health risk.",
     returned_to_compliance: "A formal designation that a water system has corrected its violations."
   };
-  
 
   const VIEW_TOOLTIPS = {
-    percent_compliant: VIOLATION_DESCRIPTIONS.percent_compliant,
+    pct_out_of_compliance: VIOLATION_DESCRIPTIONS.pct_out_of_compliance,
     priority_system_count: VIOLATION_DESCRIPTIONS.priority_system_count,
-    sum_health_viols: VIOLATION_DESCRIPTIONS.health_based,
-    sum_acute_viols: VIOLATION_DESCRIPTIONS.acute_health_based,
-    sum_monitor_viols: VIOLATION_DESCRIPTIONS.monitoring_reporting,
-    sum_public_notice: VIOLATION_DESCRIPTIONS.public_notification_and_other,
+    sum_health_viols: VIOLATION_DESCRIPTIONS.health,
+    sum_acute_viols: VIOLATION_DESCRIPTIONS.acute,
+    sum_monitor_viols: VIOLATION_DESCRIPTIONS.monitor,
+    sum_public_notice: VIOLATION_DESCRIPTIONS.public,
   };
 
   const VIEW_DESCRIPTIONS = {
-    percent_compliant: VIOLATION_DESCRIPTIONS.percent_compliant,
+    pct_out_of_compliance: VIOLATION_DESCRIPTIONS.pct_out_of_compliance,
     priority_system_count: VIOLATION_DESCRIPTIONS.priority_system_count,
-    sum_health_viols: VIOLATION_DESCRIPTIONS.health_based,
-    sum_acute_viols: VIOLATION_DESCRIPTIONS.acute_health_based,
-    sum_monitor_viols: VIOLATION_DESCRIPTIONS.monitoring_reporting,
-    sum_public_notice: VIOLATION_DESCRIPTIONS.public_notification_and_other,
+    sum_health_viols: VIOLATION_DESCRIPTIONS.health,
+    sum_acute_viols: VIOLATION_DESCRIPTIONS.acute,
+    sum_monitor_viols: VIOLATION_DESCRIPTIONS.monitor,
+    sum_public_notice: VIOLATION_DESCRIPTIONS.public,
   };
 
-  /** Short labels for pills — one per type. View keys map to violation keys for shared types. */
+  /** Short labels for pills. Keys match system_lookup violations. */
   const PILL_SHORT_LABELS = {
-    percent_compliant: "Percent compliant",
+    pct_out_of_compliance: "Out of compliance",
     priority_system_count: "Enforcement Priority",
-    health_based: "Health",
-    acute_health_based: "Acute health",
-    monitoring_reporting: "Monitoring",
-    public_notification_and_other: "Public notice & other",
+    health: "Health",
+    acute: "Acute health",
+    monitor: "Monitoring",
+    public: "Public notice & other",
   };
 
   const VIEW_TO_PILL_KEY = {
-    sum_health_viols: "health_based",
-    sum_acute_viols: "acute_health_based",
-    sum_monitor_viols: "monitoring_reporting",
-    sum_public_notice: "public_notification_and_other",
+    sum_health_viols: "health",
+    sum_acute_viols: "acute",
+    sum_monitor_viols: "monitor",
+    sum_public_notice: "public",
   };
+
+  /** Data property keys: rate (per 1k) vs count. Views without rate use same key. */
+  const VIEW_DATA_KEYS = {
+    pct_out_of_compliance: { rate: "pct_out_of_compliance", count: "pct_out_of_compliance" },
+    priority_system_count: { rate: "rate_priority_per_1k", count: "sum_priority" },
+    sum_health_viols: { rate: "rate_health_per_1k", count: "sum_health_viols" },
+    sum_acute_viols: { rate: "rate_acute_per_1k", count: "sum_acute_viols" },
+    sum_monitor_viols: { rate: "rate_monitor_per_1k", count: "sum_monitor_viols" },
+    sum_public_notice: { rate: "rate_public_per_1k", count: "sum_public_notice" },
+  };
+
+  const RATEABLE_VIEWS = new Set([
+    "priority_system_count",
+    "sum_health_viols",
+    "sum_acute_viols",
+    "sum_monitor_viols",
+    "sum_public_notice",
+  ]);
 
   const pillShortLabels = {
     ...PILL_SHORT_LABELS,
@@ -147,21 +170,28 @@
   };
 
   let view = $state(VIEW_OPTIONS[0].value);
+  let useRateMode = $state(true);
   let searchQuery = $state("");
   let activeCounty = $state(null);
   let highlightedPwsId = $state(null);
+
+  const effectiveDataKey = $derived(
+    VIEW_DATA_KEYS[view]
+      ? useRateMode
+        ? VIEW_DATA_KEYS[view].rate
+        : VIEW_DATA_KEYS[view].count
+      : view,
+  );
+
+  const showRateToggle = $derived(RATEABLE_VIEWS.has(view));
 
   const currentViewOption = $derived(
     VIEW_OPTIONS.find((o) => o.value === view) ?? VIEW_OPTIONS[0],
   );
 
-  /** Scale extent: use percentiles to avoid outliers dominating. 95th percentile as max. */
-  const PERCENTILE = 95;
-  const PERCENTILE_ACUTE = 99;
-
   const viewExtent = $derived.by(() => {
     const list = countiesList;
-    const key = view;
+    const key = effectiveDataKey;
     if (!list.length || !key) return { min: 0, max: 0, maxCapped: false };
     const values = list
       .map((c) => c[key])
@@ -169,36 +199,20 @@
     if (!values.length) return { min: 0, max: 0, maxCapped: false };
     const sorted = [...values].sort((a, b) => a - b);
     const dataMin = sorted[0];
-    const dataMax = sorted[sorted.length - 1];
-    const isPct = key === "percent_compliant";
-    const use99th = key === "sum_acute_viols";
-    if (use99th) {
-      const pIdx = Math.min(
-        Math.ceil((PERCENTILE_ACUTE / 100) * sorted.length) - 1,
-        sorted.length - 1,
-      );
-      const pMax = sorted[Math.max(0, pIdx)];
-      const min = Math.floor(dataMin);
-      const max = Math.ceil(pMax);
-      return { min, max, maxCapped: true };
-    }
+    const isPct = key === "pct_out_of_compliance";
+    const percentile = currentViewOption.percentile ?? 95;
+    const pIdx = Math.min(
+      Math.ceil((percentile / 100) * sorted.length) - 1,
+      sorted.length - 1,
+    );
+    const pMax = sorted[Math.max(0, pIdx)];
     if (isPct) {
-      const pIdx = Math.min(
-        Math.ceil((PERCENTILE / 100) * sorted.length) - 1,
-        sorted.length - 1,
-      );
-      const pMax = sorted[Math.max(0, pIdx)];
       return {
         min: Math.floor(dataMin * 10) / 10,
         max: Math.ceil(pMax * 10) / 10,
         maxCapped: true,
       };
     }
-    const pIdx = Math.min(
-      Math.ceil((PERCENTILE / 100) * sorted.length) - 1,
-      sorted.length - 1,
-    );
-    const pMax = sorted[Math.max(0, pIdx)];
     const min = Math.floor(dataMin);
     const max = Math.ceil(pMax);
     return { min, max, maxCapped: true };
@@ -301,7 +315,10 @@
       extentMin={viewExtent.min}
       extentMax={viewExtent.max}
       extentMaxCapped={viewExtent.maxCapped}
-      isPercent={view === "percent_compliant"}
+      isPercent={view === "pct_out_of_compliance"}
+      isRate={useRateMode && showRateToggle}
+      showRateToggle={showRateToggle}
+      bind:useRateMode
     />
   </div>
 
@@ -316,10 +333,12 @@
         {mississippiRiver}
         {counties}
         {view}
+        dataKey={effectiveDataKey}
         viewColors={VIEW_COLORS}
         pillBadgeStyles={PILL_BADGE_STYLES}
         {viewExtent}
         {pillShortLabels}
+        {useRateMode}
         {activeCounty}
         {highlightedPwsId}
         onCountyClick={(props) => selectCounty(props)}
@@ -329,12 +348,14 @@
 
     <CountyModal
       county={activeCounty}
+      dataKey={effectiveDataKey}
       violationColors={VIOLATION_COLORS}
       violationTooltips={VIOLATION_DESCRIPTIONS}
       pillBadgeStyles={PILL_BADGE_STYLES}
       {pillShortLabels}
       {view}
       viewOptions={VIEW_OPTIONS}
+      useRateMode={useRateMode}
       viewColors={VIEW_COLORS}
       viewTooltips={VIEW_TOOLTIPS}
       {highlightedPwsId}
@@ -384,10 +405,14 @@
       position: relative;
       z-index: 30;
       display: grid;
-      grid-template-columns: 1fr 400px;
+      grid-template-columns: 300px 1fr;
       align-items: end;
       gap: 1rem;
       margin-bottom: 0.5rem;
+    }
+
+    .legend-view-grid > *:last-child {
+      min-width: 0;
     }
 
     .dropdowns {

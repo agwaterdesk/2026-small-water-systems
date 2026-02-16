@@ -12,10 +12,12 @@
         mississippiRiver = null,
         counties,
         view,
+        dataKey = null,
         viewColors = {},
         pillBadgeStyles = {},
         viewExtent = { min: 0, max: 100 },
         pillShortLabels = {},
+        useRateMode = false,
         activeCounty = null,
         onCountyClick,
         highlightedPwsId = null,
@@ -27,14 +29,18 @@
     let hoverPopup = $state(null);
 
     const viewRef = { current: view };
+    const dataKeyRef = { current: dataKey ?? view };
     const pillShortLabelsRef = { current: pillShortLabels };
     const viewColorsRef = { current: viewColors };
     const pillBadgeStylesRef = { current: pillBadgeStyles };
+    const useRateModeRef = { current: useRateMode };
     $effect(() => {
         viewRef.current = view;
+        dataKeyRef.current = dataKey ?? view;
         pillShortLabelsRef.current = pillShortLabels;
         viewColorsRef.current = viewColors;
         pillBadgeStylesRef.current = pillBadgeStyles;
+        useRateModeRef.current = useRateMode;
     });
 
     mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -186,7 +192,7 @@
                         "fill-color": [
                             "interpolate",
                             ["linear"],
-                            ["min", ["coalesce", ["get", view], 0], scaleMax],
+                            ["min", ["coalesce", ["get", dataKey ?? view], 0], scaleMax],
                             0,
                             "white",
                             scaleMax,
@@ -354,20 +360,25 @@
                         : "";
                     if (label) {
                         const v = viewRef.current;
+                        const key = dataKeyRef.current ?? v;
                         const labels = pillShortLabelsRef.current;
-                        const rawVal = props?.[v];
+                        const isRate = useRateModeRef.current;
+                        const rawVal = props?.[key];
                         const numVal = typeof rawVal === "number" && !Number.isNaN(rawVal) ? rawVal : null;
-                        const isViolation = v !== "percent_compliant" && v !== "priority_system_count";
+                        const isPct = v === "pct_out_of_compliance";
                         const isPriority = v === "priority_system_count";
+                        const isViolation = !isPct && !isPriority;
                         const displayVal =
                             numVal != null
-                                ? v === "percent_compliant"
+                                ? isPct
                                     ? `${numVal.toFixed(1)}%`
-                                    : isPriority
-                                        ? `${numVal.toLocaleString()} priority system${numVal === 1 ? "" : "s"}`
-                                        : isViolation
-                                            ? `${numVal.toLocaleString()} violation${numVal === 1 ? "" : "s"}`
-                                            : numVal.toLocaleString()
+                                    : isRate
+                                        ? `${numVal.toFixed(2)} per 1k people served`
+                                        : isPriority
+                                            ? `${numVal.toLocaleString()} priority system${numVal === 1 ? "" : "s"}`
+                                            : isViolation
+                                                ? `${numVal.toLocaleString()} violation${numVal === 1 ? "" : "s"}`
+                                                : numVal.toLocaleString()
                                 : "—";
                         const shortLabel = labels[v] ?? v;
                         const badge = pillBadgeStylesRef.current[v] ?? pillBadgeStylesRef.current._fallback ?? { bg: "#f3f4f6", text: "#374151" };
@@ -429,6 +440,7 @@
 
     $effect(() => {
         const currentView = view;
+        const key = dataKey ?? view;
         const mapInstance = map;
         const loaded = isLoaded;
         const geo = countiesGeoJSON;
@@ -447,7 +459,7 @@
             mapInstance.setPaintProperty("counties-fill", "fill-color", [
                 "interpolate",
                 ["linear"],
-                ["min", ["coalesce", ["get", currentView], 0], scaleMax],
+                ["min", ["coalesce", ["get", key], 0], scaleMax],
                 0,
                 "white",
                 scaleMax,
