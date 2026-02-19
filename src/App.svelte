@@ -92,15 +92,15 @@
   /** Descriptions for each view. Keys match system_lookup violations. */
   const VIOLATION_DESCRIPTIONS = {
     pct_out_of_compliance:
-      "Share of Community Water Systems in the county with at least one active violation.",
+      "Share of community water systems in a county with at least one violation.",
     priority_system_count:
-      "Water systems that have serious, unresolved, or repeated violations.",
+      "Water systems that have serious, unresolved or repeated violations.",
     health:
       "Indicates that water samples have exceeded the legal limit for a specific contaminant or failed a mandatory treatment technique.",
     acute:
       "Health-based violations with the potential to produce immediate illness.",
     monitor:
-      "Failure to conduct regular water quality monitoring or timely submit results to environmental agencies.",
+      "Failure to conduct regular water quality monitoring or submit timely results to environmental agencies.",
     public:
       "Failure to alert consumers about serious drinking water problems that may pose a public health risk.",
     returned_to_compliance: "A formal designation that a water system has corrected its violations."
@@ -280,7 +280,6 @@
   <p class="dek">
     According to the most recent EPA data, there are more than 13,000 community water systems (CWSs) in the Mississippi/Atchafalaya River Basin <span class="basin-svg-wrap"><BasinSvg width={20} fill="#B0B3B3" /></span> serving 10,000 people or less. Nearly 40% of those CWSs were out of compliance with federal clean water laws sometime in the 12 months that ended Sept. 30, 2025. This map shows the counties where those systems are located. 
   </p>
-  <p class="sr-only"></p>
 
   <div class="legend-view-grid">
     <div class="dropdowns">
@@ -428,7 +427,7 @@
     #g-viz {
       position: relative;
       width: 100%;
-      height: 600px;
+      height: 500px;
       @include mq(600px, "max-width") {
         height: 600px;
       }

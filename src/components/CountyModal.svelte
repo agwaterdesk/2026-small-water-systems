@@ -184,7 +184,7 @@
 
         <span class="cws-key" title="CWS service areas on map">
           <span class="cws-key-swatch"></span>
-          <span class="section-label">Community Water Districts</span>
+          <span class="section-label">Community water system</span>
         </span>
       </div>
     </div>
