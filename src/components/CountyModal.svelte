@@ -22,6 +22,7 @@
 
   let {
     county = null,
+    dataKey = null,
     violationColors = {},
     violationTooltips = {},
     pillBadgeStyles = {},
@@ -30,6 +31,7 @@
     viewOptions = [],
     viewColors = {},
     viewTooltips = {},
+    useRateMode = false,
     highlightedPwsId = null,
     onSystemHover,
     onClose,
@@ -147,16 +149,19 @@
         <div class="summary-pills">
           {#if currentViewOption}
             {@const opt = currentViewOption}
-            {@const rawVal = county?.[opt.value]}
+            {@const key = dataKey ?? opt.value}
+            {@const rawVal = county?.[key]}
             {@const numVal =
               typeof rawVal === "number" && !Number.isNaN(rawVal)
                 ? rawVal
                 : null}
             {@const displayVal =
               numVal != null
-                ? opt.value === "percent_compliant"
+                ? opt.value === "pct_out_of_compliance"
                   ? `${numVal.toFixed(1)}%`
-                  : numVal.toLocaleString()
+                  : useRateMode
+                    ? `${numVal.toFixed(2)} per 1k people served`
+                    : numVal.toLocaleString()
                 : "—"}
             {@const shortLabel = pillShortLabels[opt.value] ?? opt.label}
             {@const customTooltip = viewTooltips[opt.value] || ""}
