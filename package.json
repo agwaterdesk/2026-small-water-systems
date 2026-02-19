@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "start": "npm run dev",
     "fetch-doc": "node ./scripts/fetch-doc.js",
-    "screenshot": "node ./scripts/screenshot.js"
+    "screenshot": "node ./scripts/screenshot.js",
+    "publish-ps": "powershell -ExecutionPolicy ByPass -File ./deploy-github.ps1"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
