@@ -261,13 +261,10 @@
 <Window />
 <!-- Outer div must have class 'chart-container' don't change -->
 <div class="chart-container">
-  <h1 class="headline">Water system violations in the Mississippi River Basin</h1>
+  <h1 class="headline">Smaller water districts struggle</h1>
 
   <p class="dek">
-    This map shows FY 2025 compliancy data for Community Water Systems (CWS) serving fewer than 10,000 people for
-    counties in the <span class="basin-svg-wrap"><BasinSvg width={20} fill="#B0B3B3" /></span>
-    Mississippi/Atchafalaya River Basin. Since CWS boundaries don't neatly align with counties, a system is
-    included if 30% or more of its area falls within county limits.
+    According to the most recent EPA data, there are more than 13,000 community water systems (CWSs) in the Mississippi/Atchafalaya River Basin <span class="basin-svg-wrap"><BasinSvg width={20} fill="#B0B3B3" /></span> serving 10,000 people or less. Nearly 40% of those CWSs were out of compliance with federal clean water laws sometime in the 12 months that ended Sept. 30, 2025. This map shows the counties where those systems are located. 
   </p>
   <p class="sr-only"></p>
 
@@ -346,15 +343,17 @@
     />
   </div>
 
-  {#if includeCredit}
+
+  
+  <!-- {#if includeCredit} -->
     <div class="credit">
-      Data: <a
+      Note: Since CWS boundaries don't always align with county lines, a system is included if 30% or more of its area falls within a county’s limits. System and violation data is for Fiscal Year 2025, which ended Sept. 30, 2025. Data: <a
         href="https://echo.epa.gov/trends/comparative-maps-dashboards/drinking-water-dashboard"
         target="_blank">EPA</a
       >; Graphic by Jared Whalen /
       <a target="_blank" href="https://agwaterdesk.org/">Ag & Water Desk</a>
     </div>
-  {/if}
+  <!-- {/if} -->
 </div>
 
 <style lang="scss">
