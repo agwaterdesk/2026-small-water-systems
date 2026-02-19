@@ -407,6 +407,11 @@
       align-items: end;
       gap: 1rem;
       margin-bottom: 0.5rem;
+
+      @include mq("medium", $dir: "max-width") {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+      }
     }
 
     .legend-view-grid > *:last-child {
@@ -428,9 +433,8 @@
       position: relative;
       width: 100%;
       height: 500px;
-      @include mq(600px, "max-width") {
-        height: 600px;
-      }
+
+  
     }
   }
 </style>

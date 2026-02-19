@@ -518,6 +518,13 @@
         }
     });
 
+    const MOBILE_MAX_WIDTH_PX = 600;
+
+    function isMobileView() {
+        if (typeof window === "undefined") return false;
+        return window.matchMedia(`(max-width: ${MOBILE_MAX_WIDTH_PX}px)`).matches;
+    }
+
     $effect(() => {
         const county = activeCounty;
         const mapInstance = map;
@@ -532,18 +539,30 @@
         const [minLon, minLat, maxLon, maxLat] = getFeatureBounds(f);
         if (minLon === Infinity) return;
 
+        const container = document.getElementById("map");
+        const containerHeight = container?.offsetHeight ?? 400;
+        const mobile = isMobileView();
+        const padding = mobile
+            ? {
+                  top: 40,
+                  bottom: Math.round(containerHeight * 0.5),
+                  left: 40,
+                  right: 40,
+              }
+            : {
+                  top: 40,
+                  bottom: 40,
+                  left: MODAL_OFFSET_PX,
+                  right: 40,
+              };
+
         mapInstance.fitBounds(
             [
                 [minLon, minLat],
                 [maxLon, maxLat],
             ],
             {
-                padding: {
-                    top: 40,
-                    bottom: 40,
-                    left: MODAL_OFFSET_PX,
-                    right: 40,
-                },
+                padding,
                 maxZoom: 10,
                 duration: 500,
             },
