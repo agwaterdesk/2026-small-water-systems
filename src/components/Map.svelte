@@ -158,7 +158,7 @@
             maxPitch: 0,
             pitchWithRotate: false,
             dragRotate: false,
-            touchZoomRotate: false,
+            touchZoomRotate: true,
         });
 
         map.fitBounds(bounds, { duration: 0, padding: 50 });
