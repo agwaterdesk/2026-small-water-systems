@@ -367,7 +367,7 @@
   
   <!-- {#if includeCredit} -->
     <div class="credit">
-      Note: Since CWS boundaries don't always align with county lines, a system is included if 30% or more of its area falls within a county’s limits. System and violation data is for Fiscal Year 2025, which ended Sept. 30, 2025. Data: <a
+      Note: Since CWS boundaries don't always align with county lines, a system is included if 30% or more of its area falls within a county’s limits. System and violation data is for 2025 federal fiscal year, which ended Sept. 30, 2025. Data: <a
         href="https://echo.epa.gov/trends/comparative-maps-dashboards/drinking-water-dashboard"
         target="_blank">EPA</a
       >; Graphic by Jared Whalen /
