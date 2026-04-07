@@ -103,7 +103,8 @@
       "Failure to conduct regular water quality monitoring or submit timely results to environmental agencies.",
     public:
       "Failure to alert consumers about serious drinking water problems that may pose a public health risk.",
-    returned_to_compliance: "A formal designation that a water system has corrected its violations."
+    returned_to_compliance:
+      "A formal designation that a water system has corrected its violations.",
   };
 
   const VIEW_TOOLTIPS = {
@@ -143,12 +144,24 @@
 
   /** Data property keys: rate (per 1k) vs count. Views without rate use same key. */
   const VIEW_DATA_KEYS = {
-    pct_out_of_compliance: { rate: "pct_out_of_compliance", count: "pct_out_of_compliance" },
-    priority_system_count: { rate: "rate_priority_per_1k", count: "sum_priority" },
+    pct_out_of_compliance: {
+      rate: "pct_out_of_compliance",
+      count: "pct_out_of_compliance",
+    },
+    priority_system_count: {
+      rate: "rate_priority_per_1k",
+      count: "sum_priority",
+    },
     sum_health_viols: { rate: "rate_health_per_1k", count: "sum_health_viols" },
     sum_acute_viols: { rate: "rate_acute_per_1k", count: "sum_acute_viols" },
-    sum_monitor_viols: { rate: "rate_monitor_per_1k", count: "sum_monitor_viols" },
-    sum_public_notice: { rate: "rate_public_per_1k", count: "sum_public_notice" },
+    sum_monitor_viols: {
+      rate: "rate_monitor_per_1k",
+      count: "sum_monitor_viols",
+    },
+    sum_public_notice: {
+      rate: "rate_public_per_1k",
+      count: "sum_public_notice",
+    },
   };
 
   const RATEABLE_VIEWS = new Set([
@@ -278,31 +291,37 @@
   <h1 class="headline">Smaller water districts struggle</h1>
 
   <p class="dek">
-    According to the most recent EPA data, there are more than 13,000 community water systems (CWSs) in the Mississippi/Atchafalaya River Basin <span class="basin-svg-wrap"><BasinSvg width={20} fill="#B0B3B3" /></span> serving 10,000 people or less. Nearly 40% of those CWSs were out of compliance with federal clean water laws sometime in the 12 months that ended Sept. 30, 2025. This map shows the counties where those systems are located. 
+    According to the most recent EPA data, there are more than 13,000 community
+    water systems (CWSs) in the Mississippi/Atchafalaya River Basin <span
+      class="basin-svg-wrap"><BasinSvg width={20} fill="#B0B3B3" /></span
+    > serving 10,000 people or less. Nearly 40% of those CWSs violated federal clean
+    water laws sometime in the 12 months that ended Sept. 30, 2025, and ended the
+    reporting period out of compliance. This map shows the counties where those systems
+    are located.
   </p>
 
   <div class="legend-view-grid">
     <div class="dropdowns">
       <DropdownControl
-      id="view-county"
-      label="View county data for"
-      mode="select"
-      options={VIEW_OPTIONS}
-      value={view}
-      onSelect={(v) => (view = v)}
-    />
-    <DropdownControl
-      id="search-county"
-      label="Search county"
-      mode="search"
-      {searchQuery}
-      onSearchChange={(q) => (searchQuery = q)}
-      searchResults={filteredCounties}
-      getOptionLabel={(c) => formatCountyName(c.GEOID, c.NAME, c.STUSPS)}
-      getOptionValue={(c) => c.GEOID}
-      placeholder="Type county name..."
-      onSelectResult={(c) => selectCounty(c)}
-    />
+        id="view-county"
+        label="View county data for"
+        mode="select"
+        options={VIEW_OPTIONS}
+        value={view}
+        onSelect={(v) => (view = v)}
+      />
+      <DropdownControl
+        id="search-county"
+        label="Search county"
+        mode="search"
+        {searchQuery}
+        onSearchChange={(q) => (searchQuery = q)}
+        searchResults={filteredCounties}
+        getOptionLabel={(c) => formatCountyName(c.GEOID, c.NAME, c.STUSPS)}
+        getOptionValue={(c) => c.GEOID}
+        placeholder="Type county name..."
+        onSelectResult={(c) => selectCounty(c)}
+      />
     </div>
     <Legend
       viewLabel={currentViewOption.label}
@@ -313,14 +332,12 @@
       extentMaxCapped={viewExtent.maxCapped}
       isPercent={view === "pct_out_of_compliance"}
       isRate={useRateMode && showRateToggle}
-      showRateToggle={showRateToggle}
+      {showRateToggle}
       bind:useRateMode
     />
   </div>
 
-  <div class="search-row">
-    
-  </div>
+  <div class="search-row"></div>
 
   <div class="viz-and-modal">
     <div id="g-viz">
@@ -351,7 +368,7 @@
       {pillShortLabels}
       {view}
       viewOptions={VIEW_OPTIONS}
-      useRateMode={useRateMode}
+      {useRateMode}
       viewColors={VIEW_COLORS}
       viewTooltips={VIEW_TOOLTIPS}
       {highlightedPwsId}
@@ -363,16 +380,22 @@
     />
   </div>
 
-
-  
   <!-- {#if includeCredit} -->
-    <div class="credit">
-      Note: Since CWS boundaries don't always align with county lines, a system is included if 30% or more of its area falls within a county’s limits. System and violation data is for 2025 federal fiscal year, which ended Sept. 30, 2025. Data: <a
-        href="https://echo.epa.gov/trends/comparative-maps-dashboards/drinking-water-dashboard"
-        target="_blank">EPA</a
-      >; Graphic by Jared Whalen /
-      <a target="_blank" href="https://agwaterdesk.org/">Ag & Water Desk</a>
-    </div>
+  <div class="credit">
+    Note: Since CWS boundaries don't always align with county lines, a system is
+    included if 30% or more of its area falls within a county’s limits. CWS
+    boundaries comes from the EPA's <a
+      href="https://www.epa.gov/ground-water-and-drinking-water/public-water-system-service-areas?tab=faq"
+      target="_blank">Public Water System Service Areas</a
+    >
+    database, though not all systems have location data. System and violation
+    data is for 2025 federal fiscal year, which ended Sept. 30, 2025. Data:
+    <a
+      href="https://echo.epa.gov/trends/comparative-maps-dashboards/drinking-water-dashboard"
+      target="_blank">EPA</a
+    >; Graphic by Jared Whalen /
+    <a target="_blank" href="https://agwaterdesk.org/">Ag & Water Desk</a>
+  </div>
   <!-- {/if} -->
 </div>
 
@@ -433,8 +456,6 @@
       position: relative;
       width: 100%;
       height: 500px;
-
-  
     }
   }
 </style>
